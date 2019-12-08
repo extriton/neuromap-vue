@@ -2,7 +2,10 @@
   <div class="container">
     <div class="row">
       <div class="col-xs-10 offset-xs-1 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3">
-        <UserAddButton @click="showPopup"/>
+        <AddButton
+          text="Добавить пользователя"
+          @click="showPopup"
+        />
       </div>
     </div>
     <div class="row">
@@ -15,29 +18,33 @@
         </UsersList>
       </div>
     </div>
-    <UserAddPopup
+    <ModalBox
       :show="showModal"
-      @add="addUser"
+      caption="Добавление пользователя"
       @cancel="hidePopup"
-    />
+    >
+      <UserAddForm :show="showModal" @submit="hidePopup" />
+    </ModalBox>
   </div>
 </template>
 
 <script>
-import UserAddButton from '@/components/UserAddButton.vue'
-import UserAddPopup from '@/components/UserAddPopup.vue'
-import UsersList from '@/components/UsersList.vue'
-import UserCard from '@/components/UserCard.vue'
+import AddButton from '@/components/shared/AddButton.vue'
+import ModalBox from '@/components/shared/ModalBox.vue'
+import UsersList from '@/components/users/UsersList.vue'
+import UserCard from '@/components/users/UserCard.vue'
+import UserAddForm from '@/components/users/UserAddForm.vue'
 
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'UsersPage',
   components: {
-    UserAddButton,
-    UserAddPopup,
+    AddButton,
+    ModalBox,
     UsersList,
-    UserCard
+    UserCard,
+    UserAddForm
   },
   data () {
     return {
@@ -53,10 +60,6 @@ export default {
     },
     hidePopup () {
       this.showModal = false
-    },
-    addUser (data) {
-      this.showModal = false
-      this.$store.commit('ADD_USER', data)
     }
   }
 }
@@ -66,16 +69,5 @@ export default {
 .users-list-wrap {
   height: 70vh;
   overflow-y: auto;
-}
-.user-add-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  &:hover {
-    cursor: pointer;
-  }
 }
 </style>

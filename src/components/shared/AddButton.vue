@@ -1,17 +1,21 @@
 <template>
     <button type="button" 
-        class="btn btn-success user-add-button"
-        data-toggle="modal"
-        data-target="#user-add-popup"
+        class="btn btn-success add-button"
         @click="onClick"
     >
-        Добавить пользователя
+        {{ text }}
     </button>
 </template>
 
 <script>
 export default {
-    name: 'UserAddButton',
+    name: 'AddButton',
+    props: {
+        text: {
+            type: String,
+            required: true
+        }
+    },
     methods: {
         onClick () {
             this.$emit('click')
@@ -21,7 +25,7 @@ export default {
 </script>
 
 <style lang="scss">
-.user-add-button {
+.add-button {
     margin-bottom: 15px;
 }
 </style>

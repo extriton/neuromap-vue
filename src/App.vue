@@ -12,6 +12,7 @@
 export default {
   mounted () {
     this.$store.commit('LOAD_USERS')
+    this.$store.commit('LOAD_MEETINGS')
   }
 }
 </script>

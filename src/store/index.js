@@ -7,7 +7,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     meetings: [], // getMeetingsList(),
-    users: [] //getUsersList()
+    users: []
   },
   getters: {
     MEETINGS: state => {
@@ -24,16 +24,24 @@ export default new Vuex.Store({
       localStorage.setItem('users', parsed);
     },
     LOAD_USERS: (state) => {
-      let users = JSON.parse(localStorage.getItem('users'))
-      if (users === null) users = []
+      const users = JSON.parse(localStorage.getItem('users')) || []
       state.users = users
+    },
+    ADD_MEETING: (state, payload) => {
+      state.meetings.push(payload)
+      const parsed = JSON.stringify(state.meetings);
+      localStorage.setItem('meetings', parsed);
+    },
+    LOAD_MEETINGS: (state) => {
+      const meetings = JSON.parse(localStorage.getItem('meetings')) || []
+      state.meetings = meetings
     }
   },
   actions: {
   },
   modules: {
   },
-  plugins: [sharedMutations({ predicate: ['ADD_USER'] })]
+  plugins: [sharedMutations({ predicate: ['ADD_USER', 'ADD_MEETING'] })]
 })
 
 /*
@@ -88,40 +96,7 @@ function getMeetingsList () {
     }
   ]
 }
-
-function getUsersList () {
-  return [
-    {
-      name: 'LLL',
-      surname: 'LL'
-    },
-    {
-      name: 'AAA',
-      surname: 'AA'
-    },
-    {
-      name: 'BBB',
-      surname: 'BB'
-    },
-    {
-      name: 'CCC',
-      surname: 'CC'
-    },
-    {
-      name: 'DDD',
-      surname: 'DD'
-    },
-    {
-      name: 'EEE',
-      surname: 'EE'
-    },
-    {
-      name: 'FFF',
-      surname: 'FF'
-    }
-  ]
-}
-
 */
+
 // Статус встреч: 0 - Запланирована, 1 - Проходит, 2 - Завершена
 // Роль пользователя: 0 - Участник, 1 - фасилитатор (facilitator), 2 - Секретарь (secretary)
