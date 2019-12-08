@@ -2,7 +2,8 @@
 <form action="#" @submit.prevent="onAdd">
     <div class="form-group">
         <label for="userName">Имя</label>
-        <input type="text"
+        <input 
+            type="text"
             class="form-control"
             id="userName"
             v-model="name"
@@ -12,7 +13,8 @@
     </div>
     <div class="form-group">
         <label for="userSurname">Фамилия</label>
-        <input type="text"
+        <input
+            type="text"
             class="form-control"
             id="userSurname"
             v-model="surname"

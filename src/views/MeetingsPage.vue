@@ -11,7 +11,8 @@
     <div class="row">
       <div class="col-xs-10 offset-xs-1 col-sm-10 offset-sm-1 col-md-10 offset-md-1 col-lg-10 offset-lg-1 meetings-list-wrap">
         <MeetingsList>
-          <MeetingCard v-for="(meeting, index) in MEETINGS"
+          <MeetingCard
+            v-for="(meeting, index) in MEETINGS"
             :key="'m' + index"
             :meeting="meeting"
           />

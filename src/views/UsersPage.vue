@@ -11,7 +11,8 @@
     <div class="row">
       <div class="col-xs-10 offset-xs-1 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 users-list-wrap">
         <UsersList>
-          <UserCard v-for="(user, index) in USERS"
+          <UserCard
+            v-for="(user, index) in USERS"
             :key="'u' + index"
             :user="user"
           />
