@@ -34,6 +34,10 @@ export default new Vuex.Store({
     },
     LOAD_MEETINGS: (state) => {
       const meetings = JSON.parse(localStorage.getItem('meetings')) || []
+      for (let i = 0; i < meetings.length; i++) {
+        meetings[i].startAt = new Date(meetings[i].startAt)
+        meetings[i].endAt = new Date(meetings[i].endAt)
+      }
       state.meetings = meetings
     }
   },

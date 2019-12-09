@@ -21,7 +21,7 @@
     </div>
     <ModalBox
       :show="showModal"
-      caption="Добавление пользователя"
+      caption="Добавление встречи"
       @cancel="hidePopup"
     >
       <MeetingAddForm :show="showModal" @submit="hidePopup" />

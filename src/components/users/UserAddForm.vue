@@ -43,9 +43,7 @@ export default {
     },
     methods: {
         onAdd () {
-            if (this.name === '' || this.surname === '') {
-                return
-            }
+            if (!this.validateForm) return
 
             const user = {
                 name: this.name,
@@ -54,15 +52,20 @@ export default {
             this.$store.commit('ADD_USER', user)
             this.$emit('submit')
         },
-        clearFields () {
+        initForm () {
             this.name = ''
             this.surname = ''
+        },
+        validateForm () {
+            if (this.name === '' || this.surname === '') return false
+
+            return true
         }
     },
     watch : {
         show (val) {
             if (val === true) {
-                this.clearFields()
+                this.initForm()
             }
         }
     }
