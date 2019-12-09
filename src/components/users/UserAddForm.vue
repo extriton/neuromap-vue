@@ -1,23 +1,23 @@
 <template>
-<form action="#" @submit.prevent="onAdd">
+<form action="#" @submit.prevent="onSubmit">
     <div class="form-group">
-        <label for="userName">Имя</label>
+        <label for="firstName">Имя</label>
         <input
             type="text"
             class="form-control"
-            id="userName"
-            v-model="name"
+            id="firstName"
+            v-model="firstName"
             placeholder="Введите имя"
             required
         />
     </div>
     <div class="form-group">
-        <label for="userSurname">Фамилия</label>
+        <label for="lastName">Фамилия</label>
         <input
             type="text"
             class="form-control"
-            id="userSurname"
-            v-model="surname"
+            id="lastName"
+            v-model="lastName"
             placeholder="Введите фамилию"
             required
         />
@@ -37,27 +37,27 @@ export default {
     },
     data () {
         return {
-            name: '',
-            surname: ''
+            firstName: '',
+            lastName: ''
         }
     },
     methods: {
-        onAdd () {
+        onSubmit () {
             if (!this.validateForm) return
 
             const user = {
-                name: this.name,
-                surname: this.surname
+                firstName: this.firstName,
+                lastName: this.lastName
             }
             this.$store.commit('ADD_USER', user)
             this.$emit('submit')
         },
         initForm () {
-            this.name = ''
-            this.surname = ''
+            this.firstName = ''
+            this.lastName = ''
         },
         validateForm () {
-            if (this.name === '' || this.surname === '') return false
+            if (!this.firstName || !this.lastName) return false
 
             return true
         }

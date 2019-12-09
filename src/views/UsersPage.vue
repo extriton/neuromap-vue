@@ -12,7 +12,7 @@
       <div class="col-xs-10 offset-xs-1 col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-3 users-list-wrap">
         <UsersList>
           <UserCard
-            v-for="(user, index) in USERS"
+            v-for="(user, index) in sortedUsers"
             :key="'u' + index"
             :user="user"
           />
@@ -53,6 +53,9 @@ export default {
     }
   },
   computed: {
+    sortedUsers () {
+      return this.USERS.slice().sort(sortByLastName)
+    },
     ...mapGetters(['USERS'])
   },
   methods: {
@@ -64,6 +67,8 @@ export default {
     }
   }
 }
+
+const sortByLastName = function (d1, d2) { return (d1.lastName.toLowerCase() > d2.lastName.toLowerCase()) ? 1 : -1; };
 </script>
 
 <style lang="scss">

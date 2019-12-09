@@ -50,6 +50,7 @@ export default {
   data () {
     return {
       showModal: false,
+      intervalId: null
     }
   },
   computed: {
@@ -61,6 +62,18 @@ export default {
     },
     hidePopup () {
       this.showModal = false
+    }
+  },
+  mounted () {
+    this.$store.commit('UPDATE_MEETINGS_STATUS')
+    this.intervalId = setInterval(() => {
+      this.$store.commit('UPDATE_MEETINGS_STATUS')
+    }, 60 * 1000)
+  },
+  beforeDestroy () {
+    if (this.intervalId !== null) {
+      clearInterval(this.intervalId)
+      this.intervalId = null
     }
   }
 }

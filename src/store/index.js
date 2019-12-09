@@ -6,7 +6,7 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    meetings: [], // getMeetingsList(),
+    meetings: [],
     users: []
   },
   getters: {
@@ -19,6 +19,7 @@ export default new Vuex.Store({
   },
   mutations: {
     ADD_USER: (state, payload) => {
+      payload.id = state.users.length + 1
       state.users.push(payload)
       const parsed = JSON.stringify(state.users);
       localStorage.setItem('users', parsed);
@@ -28,9 +29,11 @@ export default new Vuex.Store({
       state.users = users
     },
     ADD_MEETING: (state, payload) => {
+      payload.id = state.meetings.length + 1
+      payload.status = 0
       state.meetings.push(payload)
-      const parsed = JSON.stringify(state.meetings);
-      localStorage.setItem('meetings', parsed);
+      const parsed = JSON.stringify(state.meetings)
+      localStorage.setItem('meetings', parsed)
     },
     LOAD_MEETINGS: (state) => {
       const meetings = JSON.parse(localStorage.getItem('meetings')) || []
@@ -39,6 +42,20 @@ export default new Vuex.Store({
         meetings[i].endAt = new Date(meetings[i].endAt)
       }
       state.meetings = meetings
+    },
+    UPDATE_MEETINGS_STATUS: (state) =>{
+      for (let i = 0; i < state.meetings.length; i++) {
+        const now = new Date()
+        if (now.getTime() < state.meetings[i].startAt.getTime()) {
+          state.meetings[i].status = 0
+        }
+        if (now.getTime() >= state.meetings[i].startAt.getTime() && now.getTime() <= state.meetings[i].endAt.getTime()) {
+          state.meetings[i].status = 1
+        }
+        if (now.getTime() > state.meetings[i].endAt.getTime()) {
+          state.meetings[i].status = 2
+        }
+      }
     }
   },
   actions: {
@@ -47,60 +64,6 @@ export default new Vuex.Store({
   },
   plugins: [sharedMutations({ predicate: ['ADD_USER', 'ADD_MEETING'] })]
 })
-
-/*
-// Заглушка
-function getMeetingsList () {
-  return [
-    {
-      subject: 'Первая встреча',
-      startAt: '10-00',
-      endAt: '11-00',
-      status: 0,
-      users: [
-        {
-          name: 'AAA',
-          surname: 'AA',
-          role: 0
-        },
-        {
-          name: 'BBB',
-          surname: 'BB',
-          role: 0
-        },
-        {
-          name: 'CCC',
-          surname: 'CC',
-          role: 0
-        }
-      ]
-    },
-    {
-      subject: 'Вторая встреча',
-      startAt: '12-00',
-      endAt: '13-00',
-      status: 0,
-      users: [
-        {
-          name: 'DDD',
-          surname: 'DD',
-          role: 0
-        },
-        {
-          name: 'EEE',
-          surname: 'EE',
-          role: 0
-        },
-        {
-          name: 'FFF',
-          surname: 'FF',
-          role: 0
-        }
-      ]
-    }
-  ]
-}
-*/
 
 // Статус встреч: 0 - Запланирована, 1 - Проходит, 2 - Завершена
 // Роль пользователя: 0 - Участник, 1 - фасилитатор (facilitator), 2 - Секретарь (secretary)
