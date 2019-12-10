@@ -101,6 +101,7 @@
 import DateTimePicker from 'vue-vanilla-datetime-picker'
 
 import { mapGetters } from 'vuex'
+import utils from '@/utils/utils'
 
 export default {
     name: 'MeetingAddForm',
@@ -121,6 +122,7 @@ export default {
             members: [],
             facilitator: null,
             secretary: null,
+            status: 0,
             errorText: ''
         }
     },
@@ -144,6 +146,7 @@ export default {
                 members: this.members,
                 facilitator: this.facilitator,
                 secretary: this.secretary,
+                status: this.status
             }
             this.$store.commit('ADD_MEETING', meeting)
             this.$emit('submit')
@@ -187,13 +190,17 @@ export default {
             if (!this.secretary) return false
             // Validate user busyness
             if (!this.validateMemberFree()) return false
+            
             // Reverse startAt and endAt if need
             if (this.startAt.getTime() > this.endAt.getTime()) {
                 const tmpTime = new Date(this.startAt)
                 this.startAt = new Date(this.endAt)
                 this.endAt = new Date(tmpTime)
             }
-
+            
+            // Define status
+            this.status = utils.getMeetingStatus(this.startAt, this.endAt)
+      
             return true
         },
         validateMemberFree () {

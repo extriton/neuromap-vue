@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import sharedMutations from 'vuex-shared-mutations'
+import utils from '@/utils/utils'
 
 Vue.use(Vuex)
 
@@ -30,7 +31,6 @@ export default new Vuex.Store({
     },
     ADD_MEETING: (state, payload) => {
       payload.id = state.meetings.length + 1
-      payload.status = 0
       state.meetings.push(payload)
       const parsed = JSON.stringify(state.meetings)
       localStorage.setItem('meetings', parsed)
@@ -43,19 +43,12 @@ export default new Vuex.Store({
       }
       state.meetings = meetings
     },
-    UPDATE_MEETINGS_STATUS: (state) =>{
+    UPDATE_MEETINGS_STATUS: (state) => {
       for (let i = 0; i < state.meetings.length; i++) {
-        const now = new Date()
-        if (now.getTime() < state.meetings[i].startAt.getTime()) {
-          state.meetings[i].status = 0
-        }
-        if (now.getTime() >= state.meetings[i].startAt.getTime() && now.getTime() <= state.meetings[i].endAt.getTime()) {
-          state.meetings[i].status = 1
-        }
-        if (now.getTime() > state.meetings[i].endAt.getTime()) {
-          state.meetings[i].status = 2
-        }
+        state.meetings[i].status = utils.getMeetingStatus(state.meetings[i].startAt, state.meetings[i].endAt)
       }
+      const parsed = JSON.stringify(state.meetings)
+      localStorage.setItem('meetings', parsed)
     }
   },
   actions: {

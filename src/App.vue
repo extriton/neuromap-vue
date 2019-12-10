@@ -10,7 +10,7 @@
 
 <script>
 export default {
-  mounted () {
+  beforeMount () {
     this.$store.commit('LOAD_USERS')
     this.$store.commit('LOAD_MEETINGS')
   }
