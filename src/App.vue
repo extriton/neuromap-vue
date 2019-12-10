@@ -1,15 +1,16 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Встречи</router-link> |
-      <router-link to="/users">Пользователи</router-link>
-    </div>
+    <TheNavbar />
     <router-view/>
   </div>
 </template>
 
 <script>
+import TheNavbar from '@/components/TheNavbar.vue'
 export default {
+  components: {
+    TheNavbar
+  },
   beforeMount () {
     this.$store.commit('LOAD_USERS')
     this.$store.commit('LOAD_MEETINGS')
@@ -24,18 +25,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: left;
   color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-  text-align: center;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
 }
 </style>
